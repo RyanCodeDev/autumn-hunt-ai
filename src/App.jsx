@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import Progress from "./components/Progress.jsx";
-import AutumnScavengerHuntData from "./data/autumn-scavenger-hunt.jsx";
+import AutumnScavengerHuntData from "./data/autumn-scavenger-hunt.json";
+import CameraCapture from "./components/CameraCapture.jsx";
 
 function App() {
   // Model loading
@@ -17,6 +18,20 @@ function App() {
   // Create a reference to the worker object.
   const worker = useRef(null);
 
+  // Handle captured images
+  useEffect(() => {
+    const handleImageCaptured = (event) => {
+      setImageInput(event.detail.imageDataUrl);
+      setOutput("");
+    };
+
+    window.addEventListener("imageCaptured", handleImageCaptured);
+
+    return () => {
+      window.removeEventListener("imageCaptured", handleImageCaptured);
+    };
+  }, []);
+
   // We use the `useEffect` hook to set up the worker as soon as the `App` component is mounted.
   useEffect(() => {
     // Create the worker if it does not yet exist.
@@ -27,6 +42,7 @@ function App() {
 
     // Create a callback function for messages from the worker thread.
     const onMessageReceived = (e) => {
+      console.log("Message received from worker:", e.data);
       switch (e.data.status) {
         case "initiate":
           // Model file start load: add a new progress item to the list.
@@ -66,6 +82,8 @@ function App() {
         case "complete":
           // Generation complete: re-enable the "Translate" button
           setDisabled(false);
+          setDetectedObjects(e.data.output);
+          console.log("Detected objects:", e.data.output);
           break;
       }
     };
@@ -91,9 +109,17 @@ function App() {
       <h1>Autumn Hunt AI</h1>
       <h2>Get outside and find some autumn fun!</h2>
 
-      <div className="container"></div>
+      <div className="container">
+        <CameraCapture />
 
-      <button disabled={disabled} onClick={detectObjects}>
+        {imageInput && (
+          <div className="image-preview">
+            <img src={imageInput} alt="Captured" />
+          </div>
+        )}
+      </div>
+
+      <button disabled={!imageInput || disabled} onClick={detectObjects}>
         Detect Autumn
       </button>
 

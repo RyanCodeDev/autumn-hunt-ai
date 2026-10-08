@@ -21,22 +21,21 @@ self.addEventListener("message", async (event) => {
     self.postMessage(x);
   });
 
-  // Capture partial output as it streams from the pipeline
-  const streamer = new TextStreamer(detector.tokenizer, {
-    skip_prompt: true,
-    skip_special_tokens: true,
-    callback_function: function (text) {
-      self.postMessage({
-        status: "update",
-        output: text,
-      });
-    },
-  });
+  // // Capture partial output as it streams from the pipeline
+  // const streamer = new TextStreamer(detector.tokenizer, {
+  //   skip_prompt: true,
+  //   skip_special_tokens: true,
+  //   callback_function: function (text) {
+  //     self.postMessage({
+  //       status: "update",
+  //       output: text,
+  //     });
+  //   },
+  // });
 
   // Actually perform the object detection
   const output = await detector(event.data.image, {
-    // Allows for partial output to be captured
-    streamer,
+    threshold: 0.6,
   });
 
   // Send the output back to the main thread
