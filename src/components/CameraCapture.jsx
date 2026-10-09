@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 
 function CameraCapture() {
   const [hasCamera, setHasCamera] = useState(false);

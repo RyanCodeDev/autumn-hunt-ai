@@ -17,15 +17,6 @@
   width: 800px;
 }
 
-.textbox-container > textarea,
-.language-selector {
-  width: 50%;
-}
-
-.language-selector > select {
-  width: 150px;
-}
-
 .progress-container {
   position: relative;
   font-size: 14px;

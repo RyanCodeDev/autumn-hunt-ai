@@ -80,6 +80,7 @@ function App() {
         case "ai-process-started":
           // AI process started: update the status message.
           setStatusMessage("Analyzing image with local AI...");
+          setDetectedObjects([]);
           break;
 
         case "complete":
