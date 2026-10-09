@@ -2,7 +2,8 @@ import { pipeline } from "@huggingface/transformers";
 
 class ObjectDetectionPipeline {
   static task = "object-detection";
-  static model = "Xenova/detr-resnet-50";
+  static model = "onnx-community/rtdetr_v2_r50vd-ONNX";
+  static threshold = 0.1;
   static instance = null;
 
   static async getInstance(progress_callback = null) {
@@ -33,9 +34,14 @@ self.addEventListener("message", async (event) => {
   //   },
   // });
 
+  // Send the output back to the main thread
+  self.postMessage({
+    status: "ai-process-started"
+  });
+
   // Actually perform the object detection
   const output = await detector(event.data.image, {
-    threshold: 0.6,
+    threshold: ObjectDetectionPipeline.threshold,
   });
 
   // Send the output back to the main thread

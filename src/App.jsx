@@ -13,7 +13,7 @@ function App() {
   // Input and Output
   const [imageInput, setImageInput] = useState(null);
   const [detectedObjects, setDetectedObjects] = useState([]);
-  const [output, setOutput] = useState("");
+  const [statusMessage, setStatusMessage] = useState("");
 
   // Create a reference to the worker object.
   const worker = useRef(null);
@@ -22,7 +22,6 @@ function App() {
   useEffect(() => {
     const handleImageCaptured = (event) => {
       setImageInput(event.detail.imageDataUrl);
-      setOutput("");
     };
 
     window.addEventListener("imageCaptured", handleImageCaptured);
@@ -76,13 +75,18 @@ function App() {
 
         case "update":
           // Generation update: update the output text.
-          setOutput((o) => o + e.data.output);
+          break;
+
+        case "ai-process-started":
+          // AI process started: update the status message.
+          setStatusMessage("Analyzing image with local AI...");
           break;
 
         case "complete":
           // Generation complete: re-enable the "Translate" button
           setDisabled(false);
           setDetectedObjects(e.data.output);
+          setStatusMessage("");
           console.log("Detected objects:", e.data.output);
           break;
       }
@@ -98,7 +102,6 @@ function App() {
 
   const detectObjects = () => {
     setDisabled(true);
-    setOutput("");
     worker.current.postMessage({
       image: imageInput,
     });
@@ -122,6 +125,20 @@ function App() {
       <button disabled={!imageInput || disabled} onClick={detectObjects}>
         Detect Autumn
       </button>
+      <p className="status-message">{statusMessage}</p>
+
+      {detectedObjects.length > 0 && (
+        <div id="detected-objects">
+          <h3>Detected Objects:</h3>
+          <ul>
+            {detectedObjects.map((obj, index) => (
+              <li key={index}>
+                {obj.label} ({obj.score.toFixed(2)})
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="progress-bars-container">
         {ready === false && <label>Loading models... (only run once)</label>}

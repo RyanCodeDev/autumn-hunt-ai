@@ -1,10 +1,55 @@
-{
-  "items": [
-    "leaf",
-    "acorn",
-    "pinecone",
-    "pumpkin",
-    "squirrel",
-    "mum"
-  ]
-}
+[
+  {
+    "name": "leaf",
+    "alternatives": [
+      "leaf",
+      "leaves",
+      "tree",
+      "trees",
+      "branch",
+      "branches"
+    ]
+  },
+  {
+    "name": "acorn",
+    "alternatives": [
+      "acorn",
+      "acorns",
+      "nut",
+      "nuts"
+    ]
+  },
+  {
+    "name": "pinecone",
+    "alternatives": [
+      "pinecone",
+      "pinecones",
+      "cone",
+      "cones"
+    ]
+  },
+  {
+    "name": "pumpkin",
+    "alternatives": [
+      "pumpkin",
+      "pumpkins"
+    ]
+  },
+  {
+    "name": "squirrel",
+    "alternatives": [
+      "squirrel",
+      "squirrels"
+    ]
+  },
+  {
+    "name": "mum",
+    "alternatives": [
+      "mum",
+      "mums",
+      "plant",
+      "flowers",
+      "flower"
+    ]
+  }
+]
