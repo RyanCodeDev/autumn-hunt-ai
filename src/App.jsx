@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import "./App.css";
 import Progress from "./components/Progress.jsx";
-import AutumnScavengerHuntData from "./data/autumn-scavenger-hunt.json";
 import CameraCapture from "./components/CameraCapture.jsx";
 
 function App() {
@@ -110,39 +108,47 @@ function App() {
 
   return (
     <>
-      <h1>Autumn Hunt AI</h1>
-      <h2>Get outside and find some autumn fun!</h2>
+      <h1 className="text-3xl font-bold text-autumn-900 mb-4">Autumn Hunt AI</h1>
+      <h2 className="text-xl font-semibold text-autumn-800 mb-4">
+        Get outside and find some autumn fun!{" "}
+      </h2>
 
-      <div className="container">
+      <div className="container m-6 flex flex-col gap-2.5">
         <CameraCapture />
 
         {imageInput && (
-          <div className="image-preview">
-            <img src={imageInput} alt="Captured" />
+          <div className="image-preview mt-5 text-center">
+            <img src={imageInput} alt="Captured" className="max-w-full max-h-[400px] rounded-lg border-2 border-gray-800" />
           </div>
         )}
       </div>
 
-      <button disabled={!imageInput || disabled} onClick={detectObjects}>
+      <button
+        disabled={!imageInput || disabled}
+        onClick={detectObjects}
+        className="px-[0.6em] py-[0.6em] cursor-pointer font-medium rounded-md border border-transparent bg-autumn-500 text-white text-sm hover:bg-autumn-600 focus:outline-4 focus:outline-auto focus:outline-[-webkit-focus-ring-color]"
+      >
         Detect Autumn
       </button>
-      <p className="status-message">{statusMessage}</p>
+      <p className="status-message text-red-600 text-sm mt-2.5">{statusMessage}</p>
 
       {detectedObjects.length > 0 && (
         <div id="detected-objects">
-          <h3>Detected Objects:</h3>
-          <ul>
+          <h3 className="text-lg font-semibold text-autumn-900 mb-2">Detected Objects:</h3>
+          <ul className="list-disc pl-5 space-y-1">
             {detectedObjects.map((obj, index) => (
               <li key={index}>
-                {obj.label} ({obj.score.toFixed(2)})
+                <span className="text-autumn-800">{obj.label}</span> (
+                <span className="text-autumn-600">{obj.score.toFixed(2)}</span>
+                )
               </li>
             ))}
           </ul>
         </div>
       )}
 
-      <div className="progress-bars-container">
-        {ready === false && <label>Loading models... (only run once)</label>}
+      <div className="progress-bars-container p-2 h-35">
+        {ready === false && <label className="text-autumn-900">Loading models... (only run once)</label>}
         {progressItems.map((data) => (
           <div key={data.file}>
             <Progress text={data.file} percentage={data.progress} />

@@ -1,76 +1,73 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color: #213547;
-  background-color: #ffffff;
+@import "tailwindcss";
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+@theme inline {
+  --color-autumn-50: #fff8f0;
+  --color-autumn-100: #ffd9b3;
+  --color-autumn-200: #ffc685;
+  --color-autumn-300: #ff9e4d;
+  --color-autumn-400: #ff7f27;
+  --color-autumn-500: #d65a18;
+  --color-autumn-600: #b8460e;
+  --color-autumn-700: #92380d;
+  --color-autumn-800: #732e0b;
+  --color-autumn-900: #5a2409;
+  --color-autumn-950: #351205;
+  
+  --color-leaf-50: #f0fdf4;
+  --color-leaf-100: #dcfce7;
+  --color-leaf-200: #bbf7d0;
+  --color-leaf-300: #86efac;
+  --color-leaf-400: #4ade80;
+  --color-leaf-500: #22c55e;
+  --color-leaf-600: #16a34a;
+  --color-leaf-700: #15803d;
+  --color-leaf-800: #166534;
+  --color-leaf-900: #14532d;
+  --color-leaf-950: #052e16;
+  
+  --color-harvest-50: #fff7ed;
+  --color-harvest-100: #ffedd5;
+  --color-harvest-200: #fed7aa;
+  --color-harvest-300: #fdba74;
+  --color-harvest-400: #fb923c;
+  --color-harvest-500: #f97316;
+  --color-harvest-600: #ea580c;
+  --color-harvest-700: #c2410c;
+  --color-harvest-800: #9a3412;
+  --color-harvest-900: #7c2d12;
+  --color-harvest-950: #431407;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+@layer base {
+  :root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color: #213547;
+    background-color: #ffffff;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+  }
+
+  h1,
+  h2 {
+    margin: 8px;
+  }
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1;
-}
-
-h1,
-h2 {
-  margin: 8px;
-}
-
-select {
-  padding: 0.3em;
-  cursor: pointer;
-}
-
-textarea {
-  padding: 0.6em;
-}
-
-button {
-  padding: 0.6em 1.2em;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-button[disabled] {
-  cursor: not-allowed;
-}
-
-select,
-textarea,
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  font-size: 1em;
-  font-family: inherit;
-  background-color: #f9f9f9;
-  transition: border-color 0.25s;
-}
-
-select:hover,
-textarea:hover,
-button:not([disabled]):hover {
-  border-color: #646cff;
-}
-
-select:focus,
-select:focus-visible,
-textarea:focus,
-textarea:focus-visible,
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+@layer components {
+  .progress-text {
+    z-index: 2;
+  }
 }

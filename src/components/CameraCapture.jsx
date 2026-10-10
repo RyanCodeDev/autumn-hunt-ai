@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 
 function CameraCapture() {
   const handleImageCapture = (file) => {
@@ -80,15 +80,20 @@ function CameraCapture() {
   };
 
   return (
-    <div className="camera-capture">
-      <div className="camera-controls">
+    <div className="camera-capture flex flex-col items-center p-5">
+      <div className="camera-controls w-full max-w-[640px]">
         <input
           type="file"
           accept="image/*"
           onChange={handleFileInput}
           capture="environment"
+          className="p-0.5 cursor-pointer rounded-md border border-transparent bg-gray-100 text-sm font-medium hover:border-autumn-500 hover:bg-autumn-50 transition-colors"
         />
-        <button type="button" onClick={handleCameraCapture}>
+        <button
+          type="button"
+          onClick={handleCameraCapture}
+          className="px-4 py-2 cursor-pointer font-medium rounded-md border border-transparent bg-leaf-500 text-white text-sm hover:bg-leaf-600 focus:outline-4 focus:outline-auto focus:outline-[-webkit-focus-ring-color]"
+        >
           Take Photo
         </button>
       </div>

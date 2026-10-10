@@ -9,10 +9,15 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "tailwindConfig": {
+    "content": ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"]
+  },
   "dependencies": {
     "@huggingface/transformers": "^4.3.1",
+    "@tailwindcss/vite": "^4.3.3",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
