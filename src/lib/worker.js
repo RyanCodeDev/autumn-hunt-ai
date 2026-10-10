@@ -22,18 +22,6 @@ self.addEventListener("message", async (event) => {
     self.postMessage(x);
   });
 
-  // // Capture partial output as it streams from the pipeline
-  // const streamer = new TextStreamer(detector.tokenizer, {
-  //   skip_prompt: true,
-  //   skip_special_tokens: true,
-  //   callback_function: function (text) {
-  //     self.postMessage({
-  //       status: "update",
-  //       output: text,
-  //     });
-  //   },
-  // });
-
   // Send the output back to the main thread
   self.postMessage({
     status: "ai-process-started"

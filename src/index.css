@@ -12,7 +12,7 @@
   --color-autumn-800: #732e0b;
   --color-autumn-900: #5a2409;
   --color-autumn-950: #351205;
-  
+
   --color-leaf-50: #f0fdf4;
   --color-leaf-100: #dcfce7;
   --color-leaf-200: #bbf7d0;
@@ -24,7 +24,7 @@
   --color-leaf-800: #166534;
   --color-leaf-900: #14532d;
   --color-leaf-950: #052e16;
-  
+
   --color-harvest-50: #fff7ed;
   --color-harvest-100: #ffedd5;
   --color-harvest-200: #fed7aa;
@@ -56,13 +56,9 @@
     margin: 0;
     display: flex;
     place-items: center;
+    padding: 10px;
     min-width: 320px;
     min-height: 100vh;
-  }
-
-  h1,
-  h2 {
-    margin: 8px;
   }
 }
 

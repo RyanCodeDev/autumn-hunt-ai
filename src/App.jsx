@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Progress from "./components/Progress.jsx";
 import CameraCapture from "./components/CameraCapture.jsx";
+import scavengerHuntItems from "./data/autumn-scavenger-hunt.json";
 
 function App() {
   // Model loading
@@ -12,6 +13,9 @@ function App() {
   const [imageInput, setImageInput] = useState(null);
   const [detectedObjects, setDetectedObjects] = useState([]);
   const [statusMessage, setStatusMessage] = useState("");
+
+  // Scavenger hunt list state
+  const [completedItems, setCompletedItems] = useState([]);
 
   // Create a reference to the worker object.
   const worker = useRef(null);
@@ -28,6 +32,30 @@ function App() {
       window.removeEventListener("imageCaptured", handleImageCaptured);
     };
   }, []);
+
+  const checkDetectedObjects = (detected) => {
+    const detectedLabels = detected.map((obj) => {
+      // Remove spaces from label
+      const label = obj.label.replace(/\s+/g, "");
+      return label.toLowerCase();
+    });
+
+    scavengerHuntItems.forEach((item, index) => {
+      const itemName = item.name.replace(/\s+/g, "").toLowerCase();
+      const itemAlternatives = item.alternatives.map((alt) =>
+        alt.replace(/\s+/g, "").toLowerCase(),
+      );
+
+      const allVariants = [itemName, ...itemAlternatives];
+
+      if (detectedLabels.some((label) => allVariants.includes(label))) {
+        setCompletedItems((prev) => {
+          if (prev.includes(index)) return prev;
+          return [...prev, index];
+        });
+      }
+    });
+  };
 
   // We use the `useEffect` hook to set up the worker as soon as the `App` component is mounted.
   useEffect(() => {
@@ -87,6 +115,13 @@ function App() {
           setDetectedObjects(e.data.output);
           setStatusMessage("");
           console.log("Detected objects:", e.data.output);
+          setDetectedObjects(e.data.output);
+          // Check for matches and mark items as completed
+          checkDetectedObjects(e.data.output);
+          break;
+
+        default:
+          console.warn("Unknown message from worker:", e.data);
           break;
       }
     };
@@ -99,6 +134,10 @@ function App() {
       worker.current.removeEventListener("message", onMessageReceived);
   });
 
+  const resetCompletedItems = () => {
+    setCompletedItems([]);
+  };
+
   const detectObjects = () => {
     setDisabled(true);
     worker.current.postMessage({
@@ -108,17 +147,51 @@ function App() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold text-autumn-900 mb-4">Autumn Hunt AI</h1>
+      <h1 className="text-3xl font-bold text-autumn-900 mb-1">
+        Autumn Hunt AI
+      </h1>
       <h2 className="text-xl font-semibold text-autumn-800 mb-4">
         Get outside and find some autumn fun!{" "}
       </h2>
 
       <div className="container m-6 flex flex-col gap-2.5">
+        {/* Scavenger Hunt List */}
+        <div className="scavenger-hunt-list p-4 bg-autumn-50 rounded-lg border border-autumn-200">
+          <h3 className="text-lg font-semibold text-autumn-900 mb-3">
+            Snap a picture of these items to check them off your list!
+          </h3>
+          <ul className="space-y-2">
+            {scavengerHuntItems.map((item, index) => {
+              const isCompleted = completedItems.includes(index);
+              return (
+                <li
+                  key={index}
+                  className={`flex items-center rounded ${
+                    isCompleted
+                      ? "text-gray-400 line-through"
+                      : "text-autumn-800"
+                  }`}
+                >
+                  <span className="mr-2">•</span>
+                  <span>{item.name}</span>
+                  {isCompleted && (
+                    <span className="ml-2 text-green-600 text-sm">✓</span>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
         <CameraCapture />
 
         {imageInput && (
           <div className="image-preview mt-5 text-center">
-            <img src={imageInput} alt="Captured" className="max-w-full max-h-[400px] rounded-lg border-2 border-gray-800" />
+            <img
+              src={imageInput}
+              alt="Captured"
+              className="max-w-[90%] max-h-100 rounded-lg border-2 border-gray-800"
+            />
           </div>
         )}
       </div>
@@ -130,17 +203,20 @@ function App() {
       >
         Detect Autumn
       </button>
-      <p className="status-message text-red-600 text-sm mt-2.5">{statusMessage}</p>
+      <p className="status-message text-red-600 text-sm mt-2.5">
+        {statusMessage}
+      </p>
 
       {detectedObjects.length > 0 && (
         <div id="detected-objects">
-          <h3 className="text-lg font-semibold text-autumn-900 mb-2">Detected Objects:</h3>
+          <h3 className="text-lg font-semibold text-autumn-900 mb-2">
+            Detected Objects:
+          </h3>
           <ul className="list-disc pl-5 space-y-1">
             {detectedObjects.map((obj, index) => (
               <li key={index}>
                 <span className="text-autumn-800">{obj.label}</span> (
-                <span className="text-autumn-600">{obj.score.toFixed(2)}</span>
-                )
+                <span className="text-autumn-600">{obj.score.toFixed(2)}</span>)
               </li>
             ))}
           </ul>
@@ -148,7 +224,11 @@ function App() {
       )}
 
       <div className="progress-bars-container p-2 h-35">
-        {ready === false && <label className="text-autumn-900">Loading models... (only run once)</label>}
+        {ready === false && (
+          <label className="text-autumn-900">
+            Loading models... (only run once)
+          </label>
+        )}
         {progressItems.map((data) => (
           <div key={data.file}>
             <Progress text={data.file} percentage={data.progress} />
