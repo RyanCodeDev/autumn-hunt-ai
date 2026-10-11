@@ -1,5 +1,3 @@
-
-
 function CameraCapture() {
   const handleImageCapture = (file) => {
     const reader = new FileReader();
@@ -81,7 +79,7 @@ function CameraCapture() {
 
   return (
     <div className="camera-capture flex flex-col items-center p-5">
-      <div className="camera-controls w-full max-w-[640px]">
+      <div className="camera-controls w-full max-w-[640px] flex flex-col gap-2.5 items-center justify-center">
         <input
           type="file"
           accept="image/*"
